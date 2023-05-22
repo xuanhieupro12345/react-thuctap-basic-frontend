@@ -1,15 +1,28 @@
 import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import { postCreateUser } from '../services/UserServices';
+import { toast } from 'react-toastify';
 
 
 const ModalAddNew = (props) => {
-    const { show, handleClose } = props;
-    const [Name, setName] = useState("")
-    const [Job, setJob] = useState("")
+    const { show, handleClose, handleUptateTable } = props;
+    const [name, setName] = useState("")
+    const [job, setJob] = useState("")
 
-    const handleSaveUsers = () => {
-        console.log('check state ', "name", Name, "job", Job)
+    const handleSaveUsers = async () => {
+        let res = await postCreateUser(name, job)
+        if (res && res.id) {
+            handleClose();
+            setName('');
+            setJob('');
+            toast.success("a users is create succeed")
+            handleUptateTable({ first_name: name, id: res.id })
+            //success 
+        } else {
+            toast.error('an error....')
+            //error
+        }
     }
     return (
 
@@ -23,11 +36,11 @@ const ModalAddNew = (props) => {
 
                         <div className="mb-3">
                             <label className="form-label">Name</label>
-                            <input type="text" className="form-control" value={Name} onChange={(event) => setName(event.target.value)} />
+                            <input type="text" className="form-control" value={name} onChange={(event) => setName(event.target.value)} />
                         </div>
                         <div className="mb-3">
                             <label className="form-label">Job</label>
-                            <input type="text" className="form-control" value={Job} onChange={(event) => setJob(event.target.value)} />
+                            <input type="text" className="form-control" value={job} onChange={(event) => setJob(event.target.value)} />
                         </div>
 
                     </div>

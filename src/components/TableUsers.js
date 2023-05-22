@@ -5,6 +5,7 @@ import { fecthAllUser } from '../services/UserServices';
 // import image from './image';
 // import AdvancedExample from '../components/Pagination'
 import ReactPaginate from 'react-paginate';
+import ModalAddNew from './modalAddNew'
 
 
 const TableUsers = (props) => {
@@ -14,6 +15,14 @@ const TableUsers = (props) => {
     const [totalUsers, settotaUsers] = useState(0)
     const [totaPages, settotaPages] = useState(0)
 
+    const [isshowModalAddNew, setishowModalAddNew] = useState(false)
+    const handleClose = () => {
+        setishowModalAddNew(false)
+    }
+
+    const handleUptateTable = (user) => {
+        setListUsers([user, ...listUsers]);
+    }
     //cánh gọi ipa
     useEffect(() => {
         // call 
@@ -42,6 +51,10 @@ const TableUsers = (props) => {
     }
 
     return (<>
+        <div className='my-3 add-new'>
+            <span> <b>List Users</b> :</span>
+            <button className="btn btn-success" onClick={() => setishowModalAddNew(true)}>add new users</button>
+        </div>
 
         <Table striped bordered hover>
             <thead>
@@ -90,6 +103,12 @@ const TableUsers = (props) => {
             breakLinkClassName="page-link"
             containerClassName="pagination"
             activeClassName="active"
+        />
+
+        <ModalAddNew
+            show={isshowModalAddNew}
+            handleClose={handleClose}
+            handleUptateTable={handleUptateTable}
         />
 
         {/* <div>

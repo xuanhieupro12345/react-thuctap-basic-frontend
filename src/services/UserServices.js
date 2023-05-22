@@ -6,4 +6,8 @@ const fecthAllUser = (page) => {
 
 }
 
-export { fecthAllUser }
+const postCreateUser = (name, job) => {
+    return axios.post("/api/users", { name, job })
+}
+
+export { fecthAllUser, postCreateUser }
