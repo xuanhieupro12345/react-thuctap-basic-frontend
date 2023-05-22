@@ -6,6 +6,7 @@ import { fecthAllUser } from '../services/UserServices';
 // import AdvancedExample from '../components/Pagination'
 import ReactPaginate from 'react-paginate';
 import ModalAddNew from './modalAddNew'
+import ModalEditUser from './modalEditUser';
 
 
 const TableUsers = (props) => {
@@ -16,8 +17,18 @@ const TableUsers = (props) => {
     const [totaPages, settotaPages] = useState(0)
 
     const [isshowModalAddNew, setishowModalAddNew] = useState(false)
+    const [isShowModalEdit, setisShowModalEdit] = useState(false)
+    const [dataUserEdit, setdataUserEdit] = useState({})
+
     const handleClose = () => {
         setishowModalAddNew(false)
+        setisShowModalEdit(false)
+    }
+
+    const handleEditUesr = (user) => {
+        console.log(user)
+        setdataUserEdit(user);
+        setisShowModalEdit(true);
     }
 
     const handleUptateTable = (user) => {
@@ -64,6 +75,7 @@ const TableUsers = (props) => {
                     <th>first_name</th>
                     <th>last_name</th>
                     <th>Avatar</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -77,6 +89,13 @@ const TableUsers = (props) => {
                                 <td>{item.first_name}</td>
                                 <td>{item.last_name}</td>
                                 <td>{item.avatar}</td>
+                                <td>
+                                    <button
+                                        className='btn btn-warning m-2'
+                                        onClick={() => handleEditUesr(item)}
+                                    >Edit</button>
+                                    <button className='btn btn-danger'> Delete</button>
+                                </td>
                             </tr>
                         )
                     })
@@ -111,10 +130,11 @@ const TableUsers = (props) => {
             handleUptateTable={handleUptateTable}
         />
 
-        {/* <div>
-            <AdvancedExample />
-        </div> */}
-
+        <ModalEditUser
+            show={isShowModalEdit}
+            handleClose={handleClose}
+            dataUserEdit={dataUserEdit}
+        />
     </>)
 }
 
